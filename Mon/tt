@@ -1,0 +1,22 @@
+MODULE HelloWorld;
+VAR
+  A : REAL;
+  Z : REAL;
+  B : INTEGER;
+  C : STRING;
+  D : CHAR;
+BEGIN
+Z:=3.2;
+  A := 2.2;
+  C := "ASAS";
+  D := 'M';
+
+  A := C;
+
+  
+  
+  
+  
+END HelloWorld. 
+
+

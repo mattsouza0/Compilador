@@ -1,0 +1,8 @@
+MODULE HelloWorld;
+VAR
+  A: INTEGER;
+BEGIN
+  B := 2;
+ 
+END HelloWorld. 
+

@@ -1,0 +1,54 @@
+Program. Progr ::= "MODULE" Ident";" BlocoDec "BEGIN" RegraStmt "END" Ident"." ; 
+
+rules BlocoDec ::= BlocoConstante BlocoDec| BlocoVar BlocoDec| BlocoType BlocoDec| "";
+rules BlocoConstante ::= "CONST" RegraConstante;
+rules RegraConstante ::= Ident ":" Type "=" Valor ";" | Ident ":" Type "=" Valor ";" RegraConstante ; 
+
+rules RegraDec       ::= Ident ":" Type | Ident ":" Type RegraDec ;
+
+rules BlocoVar       ::= "VAR" RegraDecVar;
+rules RegraDecVar    ::= RegraDec ";" | RegraDec ";" RegraDecVar ;  
+
+rules BlocoType      ::= "TYPE" RegraType ;
+rules RegraType      ::= RegraDecVetor| RegraDecVetor RegraType | RegraDecStruct | RegraDecStruct RegraType; 
+rules RegraDecVetor  ::= Ident "=" "VETOR" Integer "DE" Type ";";
+rules RegraDecStruct ::= Ident "=" "REGISTRO" "DE" RegraDec "END" | Ident "=" "REGISTRO" "DE" RegraDec "END" RegraDecStruct;
+
+rules BlocoStmt ::= "BEGIN" RegraStmt "END";
+rules RegraStmt ::= Stmt | Stmt RegraStmt | "";
+rules Stmt      ::= Atribuicao ";"| Opa ";"| If ";"| While ";" | For ";" | Case ";" ;
+
+rules Atribuicao       ::= Ident ":=" RExpr | AtribuicaoVetor | AtribuicaoStruct;
+rules AtribuicaoVetor  ::= Ident "[" Integer "]" ":=" Valor | Ident "[" Integer "]" ":=" Ident ;     
+rules AtribuicaoStruct ::= Ident "." Ident ":=" Valor | Ident "." Ident ":=" Ident ;
+
+rules Valor ::= String| Char| Double| Integer ;
+rules RExpr ::= Valor | Ident | Opa ;
+
+LSom.      Opa  ::= Opa  "+" Opa1;
+LSub.      Opa  ::= Opa  "-" Opa1;
+LMul.      Opa1 ::= Opa1 "*" Opa2;
+LDiv.      Opa1 ::= Opa1 "/" Opa2;
+rules      Opa2 ::= Integer | Double | Ident;
+coercions  Opa 2;
+
+rules ExpressaoLogica ::= RExpr OperadoresLogicos RExpr | RExpr OperadoresLogicos RExpr ConectivosLogicos ExpressaoLogica;
+
+rules If        ::= IfStmt | IfStmt ElseStmt | IfStmt ElsIfStmt ElseStmt | "";
+rules IfStmt    ::= "IF" ExpressaoLogica "THEN" BlocoStmt;
+rules ElseStmt  ::= "ELSE" BlocoStmt;
+rules ElsIfStmt ::= "ELSIF" ExpressaoLogica "THEN" BlocoStmt;
+
+rules While ::= "WHILE" ExpressaoLogica "DO" BlocoStmt;
+
+rules For ::= "FOR" Atribuicao "TO" RExpr "DO" BlocoStmt ;
+
+rules Case        ::= CaseStmt  ;
+rules CaseStmt    ::= "CASE" Ident "OF" BlocoStmt |  "ELSE" BlocoStmt ;
+
+rules Type ::= "INTEGER"| "REAL"| "CHAR"| "STRING" ;
+
+rules OperadoresLogicos     ::= ">" | "<" | ">=" | "<=" | "=" | "<>" ;
+rules ConectivosLogicos     ::= "AND"| "OR" | "NOT" ;
+
+comment "REM";
