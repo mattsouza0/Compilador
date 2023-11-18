@@ -1,0 +1,75 @@
+BNF
+
+<S> ::= “MODULE” <IDENT>”;” <BLOCODEC> “BEGIN” <REGRASTMT> “END” <IDENT>”.”
+<CHAR> ::= "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | " M" | "N" | "0" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "p" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+<DIGITO> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7"| “8” | “9”
+<IDENT> ::= <CHAR>(<CHAR> | <DIGITO>)*
+
+-----INICIO BLOCOS DECLARACOES-----
+<BLOCODEC> ::= <BLOCOCONSTANTE> <BLOCODEC>| <BLOCOVAR> <BLOCODEC>| <BLOCOTYPE> <BLOCODEC>| “”
+<BLOCOCONSTANTE> ::= “CONST” <REGRACONSTANTE>
+<REGRACONSTANTE> ::= <IDENT> “:” <TIPO> “=” <VALOR> “;” | <IDENT> “:” <TIPO> “=” <VALOR> “;” <REGRACONSTANTE> 
+<REGRADEC> ::= <IDENT> “:” <TIPO>  | <IDENT> “:” <TIPO> <REGRADEC>
+<BLOCOVAR> ::= “VAR” <REGRADECVAR>
+<REGRADECVAR> ::= <REGRADEC> “;” | <REGRADEC> “;” <REGRADECVAR>
+<BLOCOTYPE> ::= “TYPE” <REGRATYPE>
+<REGRATYPE> ::= <REGRADECVETOR> | <REGRADECVETOR> <REGRATYPE> | <REGRADECSTRUCT> | <REGRADECSTRUCT> <REGRATYPE>
+<REGRADECVETOR> ::= <IDENT> “=” “VETOR” INTEGER “DE” <TIPO> “;”
+<REGRADECSTRUCT> ::= <IDENT> “=” “REGISTRO”  “DE”  <REGRADEC> “END” | <IDENT> “=” “REGISTRO”  “DE” <REGRADEC> “END” <REGRADECSTRUCT> 
+-----FIM BLOCOS DECLARACOES------
+
+-----INICIO BLOCO STMT-----
+<BLOCOSTMT> ::= “BEGIN” <REGRASTMT> “END” 
+<REGRASTMT> ::= <STMT> | <STMT> <REGRASTMT> | “”
+<STMT> ::= <ATRIBUICAO> “;” | <OPA> “;” | <IF> “;” | <WHILE> “;” | <FOR> “;”
+----FIM BLOCO STMT-----
+
+------INICIO BLOCO ATRIBUICAO-----
+<ATRIBUICAO> ::= <IDENT> “:=” <REXPR> | <ATRIBUICAOVETOR> | <ATRIBUIVAOSTRUCT>
+<ATRIBUICAOVETOR> ::= <IDENT> “[“ <INTEGER> “]” “:=” <VALOR> | <IDENT> “[“ <INTEGER> “]” “:=” <IDENT>
+<ATRIBUICAOSTRUCT> ::= <IDENT> “.” <IDENT> “:=” <VALOR> | <IDENT> “.” <IDENT> “:=” <IDENT>
+----FIM BLOCO ATRIBUICAO-----
+
+-----INICIO REXPR-----
+<VALOR> ::= <STRING> | <CHAR> | <DOUBLE> | <INTEGER>
+<REXPR> ::=  <VALOR> | <IDENT> | <OPA>
+-----FIM REXPR-----
+
+-----INICIO OPERACOES ARITMETICAS-----
+<OPA>  ::= <OPA> “+” <OPA1>
+<OPA> ::= <OPA> “-” <OPA1>
+<OPA1> ::= <OPA1> “*” <OPA2>
+<OPA1> ::= <OPA1> “/” <OPA2>
+<OPA2> ::= <INTEGER> | <DOUBLE> | <IDENT>
+-----FIM OPERACOES ARITMETICAS-----
+
+-----INICIO OPERACOES LOGICAS-----
+<EXPRESSAOLOGICA> ::= <REXPR> <OPERADORESLOGICOS> <REXPR> | <REXPR> <OPERADORESLOGICOS> <REXPR> <CONECTIVOSLOGICOS> <EXPRESSAOLOGICA>
+-----FIM OPERACOES LOGICAS-----
+
+-----INICIO BLOCO IF-----
+<IF> ::= <IFSTMT> | <IFSTMT> <ELSESTMT> | <IFSTMT> <ELSIFSTMT> <ELSESTMT> | “”
+<IFSTMT> ::= “IF” <EXPRESSAOLOGICA> “THEN” <BLOCOSTMT> 
+<ELSESTMT> ::= “ELSE” <BLOCOSTMT>
+<ELSIFSTMT> ::= “ELSIF” <EXPRESSAOLOGICA> “THEN” <BLOCOSTMT>
+-----FIM BLOCO IF-----
+
+-----INICIO BLOCO WHILE-----
+<WHILE> ::= “WHILE” <EXPRESSAOLOGICA> “DO” <BLOCOSTMT>
+-----FIM BLOCO WHILE------
+
+-----INICIO BLOCO FOR-----
+<FOR> ::= “FOR” <ATRIBUICAO> “TO” <REXPR> “DO” <BLOCOSTMT>
+-----FIM BLOCO FOR-----
+
+-----INICIO BLOCO CASE-----
+<CASE>::= <CASESTMT>
+<CASESTMT> ::= "CASE" <IDENT> "OF" <BLOCOSTMT> |  "ELSE" <BLOCOSTMT> ;
+-----FIM BLOCO CASE-----
+
+<TIPO> ::= “INTEGER” | “REAL” | “CHAR” | “STRING”
+
+-----INÍCIO DEFINIÇÕES ELEMENTARES-----
+<OPERADORESLOGICOS> ::= “>” | "<" | ">=" | "<=" | "=" | "<>"
+<CONECTIVOSLOGICOS> ::= "AND"| "OR" | "NOT"
+-----FIM DEFINIÇÕES ELEMENTARES--------
